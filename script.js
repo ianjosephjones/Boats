@@ -1,10 +1,16 @@
 (async function () {
+	let apiUrl = '';
+	if (window.location.href.includes('github')) {
+		apiUrl = 'https://buyboatsusapi20210901144629.azurewebsites.net';
+	} else if (window.location.href.includes('localhost')) {
+		apiUrl = 'https://localhost:44372';
+	} else {
+		apiUrl = '';
+	}
 	let spinner = document.getElementById('loader');
 	// start spinner
 	spinner.style.display = 'block';
-	let activeBoatsHTTPResponse = await fetch(
-		'https://localhost:44372/api/boats'
-	);
+	let activeBoatsHTTPResponse = await fetch(`${apiUrl}/api/boats`);
 	// end spinner
 	spinner.style.display = 'none';
 
