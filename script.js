@@ -1,8 +1,4 @@
 (async function () {
-	function log(msg) {
-		console.log(msg);
-	}
-
 	var activeBoatsResponse = await fetch('https://localhost:44372/api/boats');
 	if (!activeBoatsResponse.ok) {
 		alert('api layer is down');
@@ -46,7 +42,7 @@
 
 	function buildCardContainer(activeBoat) {
 		let cardContainer = document.createElement('div');
-		cardContainer.classList.add('card', 'h-100', 'mt-2', 'mx-1');
+		cardContainer.classList.add('card', 'h-100', 'mt-2', 'mx-3');
 
 		let img = document.createElement('img');
 		img.src = activeBoat.Images[0]?.Uri;
@@ -62,19 +58,19 @@
 		cardBody.classList.add('card-body', 'p-4');
 		let boatTitle = document.createElement('h5');
 		boatTitle.classList.add('fw-bolder');
-		boatTitle.innerHTML = activeBoat.MakeStringExact;
+		boatTitle.innerHTML = activeBoat.ModelYear += ' ';
+		boatTitle.innerHTML += activeBoat.MakeStringExact;
 
 		let salesStatus = document.createElement('div');
 		salesStatus.classList.add('text-center');
 		salesStatus.innerHTML = activeBoat.ModelExact;
 
 		let price = document.createElement('div');
-		price.classList.add('text-center');
-		price.innerHTML = activeBoat.Price;
-
+		price.classList.add('text-center', 'text-primary', 'text-weight-bold');
+		price.innerHTML = '$' + activeBoat.NormPrice.toLocaleString('en-US');
 		salesStatus.prepend(boatTitle);
 		cardBody.appendChild(salesStatus);
-
+		salesStatus.appendChild(price);
 		cardContainer.appendChild(cardBody);
 	}
 
