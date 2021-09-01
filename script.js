@@ -1,44 +1,70 @@
 (async function () {
-	var activeBoatsResponse = await fetch('https://localhost:44372/api/boats');
-	if (!activeBoatsResponse.ok) {
+	let spinner = document.getElementById('loader');
+	// start spinner
+	spinner.style.display = 'block';
+	let activeBoatsHTTPResponse = await fetch(
+		'https://localhost:44372/api/boats'
+	);
+	// end spinner
+	spinner.style.display = 'none';
+
+	if (!activeBoatsHTTPResponse.ok) {
 		alert('api layer is down');
+	} else {
+		let activeBoats = await activeBoatsHTTPResponse.json();
+
+		let target = document.getElementById('target');
+
+		if (
+			activeBoats.active?.error ||
+			activeBoats.pending?.error ||
+			(activeBoats.active?.numResults === 0 &&
+				activeBoats.pending?.numResults === 0)
+		) {
+			if (activeBoats.active?.error || activeBoats.pending?.error) {
+				console.error(activeBoats.active?.error?.message);
+				console.error(activeBoats.pending?.error?.message);
+			}
+			// no results
+			let noBoats = document.createElement('img');
+			noBoats.src =
+				'https://images.squarespace-cdn.com/content/v1/602944057f812d1e2d2139b9/1628448451719-6PBHE7TKMHQU70Q7LH3I/Coming_Soon.png?format=2500w';
+			target.appendChild(noBoats);
+		} else {
+			let activePendingBoats = [].concat(
+				activeBoats.active?.results,
+				activeBoats.pending?.results
+			);
+
+			let section = document.createElement('section');
+			section.className = 'py-5';
+			let container = document.createElement('div');
+			container.classList.add('container', 'px-4', 'px-lg-5', 'mt-5');
+			let row = document.createElement('div');
+			row.classList.add(
+				'row',
+				'gx-4',
+				'gx-lg-5',
+				'row-cols-2',
+				'row-cols-md-3',
+				'row-cols-xl-4',
+				'justify-content-center'
+			);
+
+			container.appendChild(row);
+			section.appendChild(container);
+
+			activePendingBoats.forEach((activeBoat) => {
+				let cardContainer = buildCardContainer(activeBoat);
+				buildCardBody(cardContainer, activeBoat);
+				buildCardFooter(cardContainer, activeBoat);
+
+				row.appendChild(cardContainer);
+			});
+
+			target.appendChild(section);
+		}
 	}
-
-	var responseJson = await activeBoatsResponse.json();
-
-	var activeBoats = [].concat(
-		responseJson.active.results,
-		responseJson.pending.results
-	);
-
-	var target = document.getElementById('target');
-	let section = document.createElement('section');
-	section.className = 'py-5';
-	let container = document.createElement('div');
-	container.classList.add('container', 'px-4', 'px-lg-5', 'mt-5');
-	let row = document.createElement('div');
-	row.classList.add(
-		'row',
-		'gx-4',
-		'gx-lg-5',
-		'row-cols-2',
-		'row-cols-md-3',
-		'row-cols-xl-4',
-		'justify-content-center'
-	);
-
-	container.appendChild(row);
-	section.appendChild(container);
-
-	activeBoats.forEach((activeBoat) => {
-		var cardContainer = buildCardContainer(activeBoat);
-		buildCardBody(cardContainer, activeBoat);
-		buildCardFooter(cardContainer, activeBoat);
-
-		row.appendChild(cardContainer);
-	});
-
-	target.appendChild(section);
 
 	function buildCardContainer(activeBoat) {
 		let cardContainer = document.createElement('div');
@@ -75,7 +101,7 @@
 	}
 
 	function buildCardFooter(cardContainer, activeBoat) {
-		var cardFooter = document.createElement('div');
+		let cardFooter = document.createElement('div');
 		cardFooter.classList.add(
 			'card-footer',
 			'p-4',
