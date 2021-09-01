@@ -1,6 +1,9 @@
 (async function () {
 	let apiUrl = '';
-	if (window.location.href.includes('github')) {
+	if (
+		window.location.href.includes('github') ||
+		window.location.href.includes('porcupine-broccoli-2txf.squarespace.com')
+	) {
 		apiUrl = 'https://buyboatsusapi20210901144629.azurewebsites.net';
 	} else if (window.location.href.includes('localhost')) {
 		apiUrl = 'https://localhost:44372';
