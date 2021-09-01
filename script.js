@@ -1,5 +1,5 @@
 (async function () {
-	let apiUrl = '';
+	let apiUrl = 'https://buyboatsusapi20210901144629.azurewebsites.net';
 	if (
 		window.location.href.includes('github') ||
 		window.location.href.includes('porcupine-broccoli-2txf.squarespace.com')
@@ -8,7 +8,8 @@
 	} else if (window.location.href.includes('html')) {
 		apiUrl = 'https://localhost:44372';
 	} else {
-		apiUrl = '';
+		// TODO: set production rul
+		// apiUrl = '';
 	}
 	let spinner = document.getElementById('loader');
 	// start spinner
