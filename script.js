@@ -55,9 +55,10 @@
 				'row',
 				'gx-4',
 				'gx-lg-5',
-				'row-cols-2',
-				'row-cols-md-3',
-				'row-cols-xl-4',
+				'row-col-1',
+				'row-cols-sm-2',
+				'row-cols-md-2',
+				'row-cols-lg-4',
 				'justify-content-center'
 			);
 
