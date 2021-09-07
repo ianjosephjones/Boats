@@ -1,7 +1,7 @@
 (async function () {
 	let apiUrl = 'https://localhost:44372';
 	if (
-		window.location.href.includes('github') ||
+		window.location.href.includes('index') ||
 		window.location.href.includes('squarespace')
 	)
 		apiUrl = 'https://buyboatsusapi20210901144629.azurewebsites.net';
@@ -136,7 +136,9 @@
 		let boatTraderUrl = 'https://www.boattrader.com/boat/';
 		boatTraderUrl = `${boatTraderUrl}${
 			activeBoat.ModelYear
-		}-${activeBoat.Model.replace(' ', '-')}-${activeBoat.DocumentID}`;
+		}-${encodeURIComponent(activeBoat.Model.replace(' ', '-'))}-${
+			activeBoat.DocumentID
+		}`;
 
 		return boatTraderUrl;
 	}
